@@ -37,19 +37,16 @@
     <p>Tasks: <%= tasks.join(', ') %></p>
     <p>Team: <%= team %></p>
     <p>Location: <%= location %></p>
-
     <div class="calendar">
         <% daysOfWeek.forEach(day => { %>
             <div class="day header"><%= day %></div>
         <% }) %>
-
-        <% 
+        <%
             const firstDayIndex = (new Date(dates[0]).getDay() + 6) % 7; // Convert Sunday 0 to 6 based week starting on Monday
-            for (let i = 0; i < firstDayIndex; i++) { 
+            for (let i = 0; i < firstDayIndex; i++) {
         %>
             <div class="day"></div>
         <% } %>
-        
         <% dates.forEach(date => { %>
             <div class="day">
                 <p class="date"><%= date.getDate() %></p>

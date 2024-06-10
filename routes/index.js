@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const puppeteer = require('puppeteer');
 
-// Load predefined data
+// Charger les données prédéfinies
 const tasks = require('../data/tasks.json');
 const teams = require('../data/teams.json');
 const locations = require('../data/locations.json');
@@ -15,44 +15,52 @@ router.get('/', (req, res) => {
 
 router.post('/generate-pdf', async (req, res) => {
     const { month, tasks, team, location } = req.body;
-    console.log('Received form data:', month, tasks, team, location);
-    
-    // Make sure that month is an array and parse date correctly
-    const monthDates = Array.isArray(month) ? month : [month];
-    const validDates = monthDates.map(dt => new Date(dt)).filter(dt => !isNaN(dt));
+    console.log('Received form data:', req.body);
 
-    // Handle if no valid dates present
+    // Assurer que month est un tableau et analyser correctement les dates
+    const monthDates = Array.isArray(month) ? month : [month];
+    console.log('Month dates before parsing:', monthDates);
+
+    const validDates = monthDates.map(dt => {
+        const date = new Date(dt);
+        if (isNaN(date)) {
+            console.error('Invalid date:', dt);
+        }
+        return date;
+    }).filter(dt => !isNaN(dt));
+
+    console.log('Valid dates:', validDates);
+
+    // Gérer si aucune date valide n'est présente
     if (validDates.length === 0) {
         return res.status(400).send("Invalid dates provided.");
     }
 
     const monthStartDate = validDates[0];
-
-    // Correct year and month selection format
     const year = monthStartDate.getFullYear();
     const monthNumber = monthStartDate.getMonth();
 
-    // Generate all dates within the month
+    // Générer toutes les dates du mois
     const dates = [];
     for (let day = 1; day <= new Date(year, monthNumber + 1, 0).getDate(); day++) {
         dates.push(new Date(year, monthNumber, day));
     }
+
     console.log('Generated dates:', dates);
 
-    // Render HTML template
     res.render('calendar', {
         dates: dates,
         daysOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
         tasks: tasks,
         team: team,
         location: location,
-        month: validDates.map(date => date.toISOString().substring(0, 10))  // Ensure valid dates in ISO format
+        month: validDates.map(date => date.toISOString().substring(0, 10))
     }, async (err, html) => {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
         }
-        // Convert HTML to PDF
+
         try {
             const browser = await puppeteer.launch({
                 headless: true,
