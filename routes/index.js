@@ -18,7 +18,7 @@ router.post('/generate-pdf', async (req, res) => {
     console.log('Received form data:', req.body);
 
     // Assurer que month est un tableau et analyser correctement les dates
-    const monthDates = Array.isArray(month) ? month : [month];
+    const monthDates = month.split(',').map(dt => dt.trim());
     console.log('Month dates before parsing:', monthDates);
 
     const validDates = monthDates.map(dt => {
@@ -50,7 +50,7 @@ router.post('/generate-pdf', async (req, res) => {
 
     res.render('calendar', {
         dates: dates,
-        daysOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        daysOfWeek: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
         tasks: tasks,
         team: team,
         location: location,

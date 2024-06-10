@@ -33,7 +33,7 @@
     </style>
 </head>
 <body>
-    <h1>Calendar for <%= new Date(dates[0]).toLocaleString('default', { month: 'long', year: 'numeric' }) %></h1>
+    <h1>Calendrier pour <%= new Date(dates[0]).toLocaleString('default', { month: 'long', year: 'numeric' }) %></h1>
     <p>Tasks: <%= tasks.join(', ') %></p>
     <p>Team: <%= team %></p>
     <p>Location: <%= location %></p>
@@ -52,9 +52,9 @@
                 <p class="date"><%= date.getDate() %></p>
                 <% if (month.includes(date.toISOString().substring(0, 10))) { %>
                     <div class="info">
-                        <p>Tasks: <%= tasks.join(', ') %></p>
-                        <p>Team: <%= team %></p>
-                        <p>Location: <%= location %></p>
+                        <p><!--Tasks:--><%= tasks.join(', ') %></p>
+                        <p><!--Team:--><%= team %></p>
+                        <p><!--Location:--><%= location %></p>
                     </div>
                 <% } %>
             </div>

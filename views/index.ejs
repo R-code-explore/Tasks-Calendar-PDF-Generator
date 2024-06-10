@@ -10,27 +10,32 @@
 </head>
 <body>
     <h1>Generate Calendar</h1>
-    <form action="/generate-pdf" method="post">
+    <form action="/generate-pdf" method="post" id="pdf-form">
         <label for="month">Select Dates:</label>
-        <input type="text" id="month" name="month" required>
+        <input type="text" id="month-picker" required>
+        <input type="hidden" id="month" name="month">
+        
         <label for="tasks">Select Tasks:</label>
         <select id="tasks" name="tasks[]" multiple required>
             <% tasks.forEach(task => { %>
                 <option value="<%= task %>"><%= task %></option>
             <% }); %>
         </select>
+        
         <label for="team">Select Team:</label>
         <select id="team" name="team" required>
             <% teams.forEach(team => { %>
                 <option value="<%= team %>"><%= team %></option>
             <% }); %>
         </select>
+        
         <label for="location">Select Location:</label>
         <select id="location" name="location" required>
             <% locations.forEach(location => { %>
                 <option value="<%= location %>"><%= location %></option>
             <% }); %>
         </select>
+        
         <button type="submit">Generate PDF</button>
     </form>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -38,11 +43,23 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            flatpickr("#month", {
+            flatpickr("#month-picker", {
                 mode: "multiple",
-                dateFormat: "Y-m-d"
+                dateFormat: "Y-m-d",
+                onChange: function(selectedDates, dateStr, instance) {
+                    // Update the hidden input field with the selected dates
+                    const dateStrings = selectedDates.map(date => date.toISOString().split('T')[0]);
+                    document.getElementById('month').value = dateStrings.join(',');
+                }
             });
+
             $('#tasks, #team, #location').select2();
+
+            // Ensure that the form submits the month input correctly
+            $('#pdf-form').on('submit', function(e) {
+                const dateStrings = flatpickrInstance.selectedDates.map(date => date.toISOString().split('T')[0]);
+                $('#month').val(dateStrings.join(','));
+            });
         });
     </script>
 </body>
