@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        .day {
+            border: 1px solid #000;
+            padding: 10px;
+            min-height: 100px;
+        }
+        .header {
+            font-weight: bold;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        .date {
+            font-weight: bold;
+        }
+        .info {
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calendar for <%= new Date(dates[0]).toLocaleString('default', { month: 'long', year: 'numeric' }) %></h1>
+    <p>Tasks: <%= tasks.join(', ') %></p>
+    <p>Team: <%= team %></p>
+    <p>Location: <%= location %></p>
+
+    <div class="calendar">
+        <% daysOfWeek.forEach(day => { %>
+            <div class="day header"><%= day %></div>
+        <% }) %>
+
+        <% 
+            const firstDayIndex = (new Date(dates[0]).getDay() + 6) % 7; // Convert Sunday 0 to 6 based week starting on Monday
+            for (let i = 0; i < firstDayIndex; i++) { 
+        %>
+            <div class="day"></div>
+        <% } %>
+        
+        <% dates.forEach(date => { %>
+            <div class="day">
+                <p class="date"><%= date.getDate() %></p>
+                <% if (month.includes(date.toISOString().substring(0, 10))) { %>
+                    <div class="info">
+                        <p>Tasks: <%= tasks.join(', ') %></p>
+                        <p>Team: <%= team %></p>
+                        <p>Location: <%= location %></p>
+                    </div>
+                <% } %>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>

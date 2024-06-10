@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Calendar</title>
+    <link rel="stylesheet" href="/styles.css">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+</head>
+<body>
+    <h1>Generate Calendar</h1>
+    <form action="/generate-pdf" method="post">
+        <label for="month">Select Dates:</label>
+        <input type="text" id="month" name="month" required>
+
+        <label for="tasks">Select Tasks:</label>
+        <select id="tasks" name="tasks[]" multiple required>
+            <% tasks.forEach(task => { %>
+                <option value="<%= task %>"><%= task %></option>
+            <% }); %>
+        </select>
+
+        <label for="team">Select Team:</label>
+        <select id="team" name="team" required>
+            <% teams.forEach(team => { %>
+                <option value="<%= team %>"><%= team %></option>
+            <% }); %>
+        </select>
+
+        <label for="location">Select Location:</label>
+        <select id="location" name="location" required>
+            <% locations.forEach(location => { %>
+                <option value="<%= location %>"><%= location %></option>
+            <% }); %>
+        </select>
+
+        <button type="submit">Generate PDF</button>
+    </form>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Custom Scripts -->
+    <script src="/scripts.js"></script>
+</body>
+</html>

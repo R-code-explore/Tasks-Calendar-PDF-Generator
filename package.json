@@ -1,0 +1,19 @@
+{
+  "name": "ehpad_calendar",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "flatpickr": "^4.6.13",
+    "pdfkit": "^0.15.0",
+    "puppeteer": "^22.10.0"
+  }
+}
